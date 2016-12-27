@@ -66,7 +66,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				}
 
 				out := fmt.Sprintf("您好，目前的動物：名為%s, 所在地為:%s, 敘述: %s 電話為:%s 圖片網址在: %s", pet.Name, pet.Resettlement, pet.Note, pet.Phone, pet.ImageName)
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(out)).Do(); err != nil {
+				obj_message := linebot.NewImageMessage(pet.ImageName, pet.ImageName)
+
+				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(out),obj_message).Do(); err != nil {
 					log.Print(err)
 				}
 
