@@ -52,7 +52,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
-				var pet *Pet
+				var pet *Pets
 				log.Println(message.Text)
 				inText := strings.ToLower(message.Text)
 				if strings.Contains(inText, "狗") || strings.Contains(inText, "dog") {
@@ -66,9 +66,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				}
 
 				out := fmt.Sprintf("您好，目前的動物：名為%s, 所在地為:%s, 敘述: %s 電話為:%s 圖片網址在: %s", pet.Name, pet.Resettlement, pet.Note, pet.Phone, pet.ImageName)
-				obj_message := linebot.NewImageMessage(pet.ImageName, pet.ImageName)
+				//obj_message := linebot.NewImageMessage(pet.ImageName, pet.ImageName)
+				//因為圖片不是 https 協定，所以 LINE API 不能直接秀圖
 
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(out),obj_message).Do(); err != nil {
+				//if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(out),obj_message).Do(); err != nil {
+				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(out)).Do(); err != nil {
 					log.Print(err)
 				}
 
